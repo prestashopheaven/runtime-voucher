@@ -58,7 +58,10 @@ final class VoucherIssuer
         $rule->name = $this->names($spec, $code);
         $rule->description = '';
         $rule->id_customer = $spec->getCustomerId();
-        $rule->date_from = $now->format('Y-m-d H:i:s');
+        // A day early: PrestaShop compares date_from partly in SQL (NOW() of the database, often UTC) and partly in PHP
+        // (the shop's time zone), so a voucher made "now" could be not valid yet for hours. The customer, the single
+        // use and date_to keep it personal and short.
+        $rule->date_from = $now->modify('-1 day')->format('Y-m-d H:i:s');
         $rule->date_to = $spec->validUntil($now)->format('Y-m-d H:i:s');
         $rule->quantity = 1;
         $rule->quantity_per_user = 1;
