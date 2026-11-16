@@ -1,0 +1,50 @@
+{
+    "name": "prestashopheaven/runtime-voucher",
+    "description": "A personal one-time voucher (PrestaShop cart rule) for one customer: code with a prefix, valid for a number of hours, a percentage or an amount, optionally only for some products and one shop, shown to the customer in the cart.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "George van Engers",
+            "email": "vanengers@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "PrestaShopHeaven\\Runtime\\Voucher\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "PrestaShopHeaven\\Runtime\\Voucher\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "1.x-dev"
+        },
+        "prestashopheaven": {
+            "kind": "runtime",
+            "use-when": "A module gives a customer a personal discount code: a win-back or abandoned-cart mail, a loyalty or review reward, a price-drop or birthday voucher.",
+            "keywords": [
+                "voucher",
+                "cart-rule",
+                "discount",
+                "promo-code",
+                "coupon",
+                "personal",
+                "one-time",
+                "expiry",
+                "abandoned-cart",
+                "highlight",
+                "multistore"
+            ],
+            "integration-tested": [
+                "src/VoucherIssuer.php"
+            ]
+        }
+    }
+}
