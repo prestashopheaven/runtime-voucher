@@ -165,6 +165,9 @@ final class VoucherIssuerTest extends TestCase
         $now = new \DateTimeImmutable('-1 minute');
         $voucher = $this->issue(VoucherSpec::percent(15)->validFor(2)->forCustomer((int) $this->customer->id), $now);
 
+        $rule = new \CartRule($voucher->id);
+        self::assertSame($now->modify('-1 day')->format('Y-m-d H:i:s'), (string) $rule->date_from);
+
         $found = $issuer->find($voucher->id);
         self::assertNotNull($found);
         self::assertSame($voucher->code, $found->code);
@@ -175,7 +178,8 @@ final class VoucherIssuerTest extends TestCase
 
         self::assertTrue($issuer->isUsable($voucher->id, $now->modify('+1 hour')));
         self::assertFalse($issuer->isUsable($voucher->id, $now->modify('+3 hours')), 'expired');
-        self::assertFalse($issuer->isUsable($voucher->id, $now->modify('-1 hour')), 'not started');
+        self::assertTrue($issuer->isUsable($voucher->id, $now->modify('-1 hour')), 'starts a day early (time zones)');
+        self::assertFalse($issuer->isUsable($voucher->id, $now->modify('-25 hours')), 'not started');
         self::assertFalse($issuer->isUsable(0, $now));
         self::assertFalse($issuer->isUsable(999999999, $now));
 
